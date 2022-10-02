@@ -1,3 +1,9 @@
+variables:
+  mod-key: Mod1
+actions:
+  post:
+    add-chrome-desktop-entry: ./yaml-to-desktop-entry.py --version 1.0 --name Chrome --type Application --terminal true --exec 'flatpak run com.google.Chrome' --nodisplay false --genericname 'Web Browser' --outpath ~/.local/share/applications/chrome.desktop
+    change-mod-key: sed -i 's/Mod1/{{@@ mod-key @@}}/g' ~/.config/sway/config
 config:
   backup: true
   banner: true
@@ -8,4 +14,26 @@ config:
   link_on_import: nolink
   longkey: false
 dotfiles:
+  sway:
+    dst: ~/.config/sway
+    src: config/sway
+    actions:
+      - change-mod-key
+  waybar:
+    dst: ~/.config/waybar
+    src: config/waybar
+  fzf:
+    dst: ~/.config/fzf
+    src: config/fzf
+  alacritty:
+    dst: ~/.config/alacritty
+    src: config/alacritty
+  desktop:
+    dst: ~/.local/share/applications
+    src: local/share/applications
+    actions:
+      - add-chrome-desktop-entry
 profiles:
+  hostname:
+    dotfiles:
+    - ALL
